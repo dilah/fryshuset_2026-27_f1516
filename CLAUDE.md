@@ -114,11 +114,18 @@ is currently active without resetting swipe position.
 
 ## Visual design
 
-- Palette: warm hardwood-floor tan background (`--wood`), cream card surfaces
-  (`--card`), deep navy ink text (`--ink`), basketball orange accent
-  (`--orange`). Not the default Claude terracotta — keep it distinct.
-- Type: `Archivo Black` for headings/titles, `Space Mono` for
-  duration/scoreboard-style numerals, `Inter` for body text.
+- Palette: matches Fryshuset Basket's actual club colors — black and white,
+  with red as the sole accent (`--red`/`--red-deep`/`--red-tint`). Light
+  neutral background (`--bg`), white card surfaces (`--card`), near-black ink
+  text (`--ink`). Deliberately switched from an earlier orange/wood-floor
+  placeholder theme to this once the real club branding was confirmed
+  (Wikipedia: Fryshuset Basket team colors are red/white; fryshusetbasket.se
+  uses a minimalist black-and-white site with a bold black display font).
+  Don't reintroduce orange or the wood-plank background.
+- Type: `Anton` (bold uppercase display face) for headings/titles — chosen to
+  echo the bold black condensed/extended headline font Fryshuset Basket uses
+  on their own site — `Space Mono` for duration/scoreboard-style numerals,
+  `Inter` for body text.
 - Mobile-first, max content width ~480px, generous tap targets, safe-area
   insets respected for notched phones.
 
