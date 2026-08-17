@@ -399,21 +399,36 @@
   document.getElementById('p-prev').addEventListener('click', ()=> goToSlide(practiceIndex - 1));
   document.getElementById('p-next').addEventListener('click', ()=> goToSlide(practiceIndex + 1));
 
-  let touchStartX = 0, touchDeltaX = 0, touching = false;
+  let touchStartX = 0, touchStartY = 0, touchDeltaX = 0, touching = false, axis = null;
+  const AXIS_THRESHOLD = 8;
   pTrack.addEventListener('touchstart', e=>{
     touching = true;
+    axis = null;
     touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchDeltaX = 0;
     pTrack.style.transition = 'none';
   }, {passive:true});
   pTrack.addEventListener('touchmove', e=>{
     if(!touching) return;
-    touchDeltaX = e.touches[0].clientX - touchStartX;
+    const dx = e.touches[0].clientX - touchStartX;
+    const dy = e.touches[0].clientY - touchStartY;
+
+    if(axis === null){
+      if(Math.abs(dx) < AXIS_THRESHOLD && Math.abs(dy) < AXIS_THRESHOLD) return;
+      axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    }
+    if(axis === 'y') return; // let the card scroll vertically, untouched
+
+    e.preventDefault();
+    touchDeltaX = dx;
     const basePct = -practiceIndex * 100;
     const dragPct = (touchDeltaX / pTrack.clientWidth) * 100;
     pTrack.style.transform = 'translateX(' + (basePct + dragPct) + '%)';
-  }, {passive:true});
+  }, {passive:false});
   pTrack.addEventListener('touchend', ()=>{
     touching = false;
+    if(axis === 'y'){ axis = null; return; }
     const d = data();
     if(touchDeltaX < -50 && practiceIndex < d.sections.length - 1){
       goToSlide(practiceIndex + 1);
@@ -423,6 +438,7 @@
       goToSlide(practiceIndex);
     }
     touchDeltaX = 0;
+    axis = null;
   });
 
   // ---------- language toggle ----------
