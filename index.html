@@ -45,6 +45,8 @@
     box-shadow:var(--shadow); font-size:16px; cursor:pointer; flex-shrink:0;
   }
   .iconbtn:active{transform:translateY(1px);}
+  .iconbtn:disabled{opacity:.35; cursor:default;}
+  .iconbtn:disabled:active{transform:none;}
 
   header.session-head{margin-bottom:16px;}
   .eyebrow{
@@ -160,6 +162,10 @@
   <div class="topbar">
     <span class="brand">Fryshuset · Girls 2015–16</span>
     <div class="topbar-controls">
+      <div class="langtoggle" id="daytoggle">
+        <button id="dayWed">WED</button>
+        <button id="dayThu">THU</button>
+      </div>
       <div class="langtoggle">
         <button id="langEn" class="active">EN</button>
         <button id="langSv">SV</button>
@@ -200,10 +206,12 @@
 <script>
 (function(){
 
-  // ---- THIS WEEK'S SESSION (English + Swedish) ----
+  // ---- THIS WEEK'S SESSIONS (English + Swedish, Wed + Thu) ----
   // To update: ask Claude to edit this object for next week's plan, then hit Publish again.
+  // Before overwriting a week, archive the outgoing week's content to archive/week-NN-<day>.md.
   const CONTENT = {
     en: {
+    wed: {
       tipLabel: "Coach's tip",
       eyebrow: "WEEK 1 · WED 17–18",
       title: "Season Kickoff",
@@ -236,7 +244,17 @@
       ],
       tip: "Resist the urge to correct technique today — almost everything here is deliberately familiar (games they already know) so the focus stays on movement and reconnection, not new information. If a few girls look noticeably out of breath, that's expected after the summer gap — let them self-pace rather than push through it. This session is also your quiet baseline check: who's picked up a ball over the summer and who hasn't — useful for pairing decisions from Week 2 onward."
     },
+    thu: {
+      tipLabel: "Coach's tip",
+      eyebrow: "WEEK 1 · THU · NOT YET PLANNED",
+      title: "Thursday TBD",
+      focus: "Thursday's session for this week hasn't been planned yet — ask Claude to fill this in.",
+      sections: [],
+      tip: ""
+    }
+    },
     sv: {
+    wed: {
       tipLabel: "Tränartips",
       eyebrow: "VECKA 1 · ONS 17–18",
       title: "Säsongsstart",
@@ -268,14 +286,30 @@
         }
       ],
       tip: "Stå emot lusten att rätta teknik idag — nästan allt här är medvetet igenkännbart (lekar de redan kan) så fokus stannar på rörelse och återkoppling, inte ny information. Om några tjejer verkar ordentligt andfådda är det väntat efter sommaruppehållet — låt dem styra sitt eget tempo istället för att pressa på. Det här passet är också din tysta nulägeskoll: vem har hållit i en boll under sommaren och vem har inte — användbart för hur du delar in par från vecka 2 och framåt."
+    },
+    thu: {
+      tipLabel: "Tränartips",
+      eyebrow: "VECKA 1 · TORS · EJ PLANERAT ÄN",
+      title: "Torsdag TBD",
+      focus: "Torsdagens pass för den här veckan är inte planerat ännu — be Claude fylla i det här.",
+      sections: [],
+      tip: ""
+    }
     }
   };
 
+  function defaultDay(){
+    // Thursday shows Thursday's plan; every other day defaults to
+    // Wednesday's, since it's either today's or the next upcoming session.
+    return new Date().getDay() === 4 ? 'thu' : 'wed';
+  }
+
   let lang = 'en';
+  let day = defaultDay();
   let practiceIndex = 0;
   let openSection = null;
 
-  function data(){ return CONTENT[lang]; }
+  function data(){ return CONTENT[lang][day]; }
 
   function escapeHtml(s){
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -309,6 +343,13 @@
     document.getElementById('v-focus').textContent = d.focus || '';
 
     const wrap = document.getElementById('v-sections');
+    if(!d.sections.length){
+      wrap.innerHTML = '';
+      document.getElementById('practiceToggle').disabled = true;
+      document.getElementById('v-tip-wrap').style.display = 'none';
+      return;
+    }
+    document.getElementById('practiceToggle').disabled = false;
     wrap.innerHTML = d.sections.map(s => {
       const isOpen = openSection === s.id;
       return `
@@ -440,11 +481,22 @@
     axis = null;
   });
 
-  // ---------- language toggle ----------
+  // ---------- language + day toggles ----------
   function setLang(newLang){
     lang = newLang;
     document.getElementById('langEn').classList.toggle('active', lang === 'en');
     document.getElementById('langSv').classList.toggle('active', lang === 'sv');
+    openSection = null;
+    renderView();
+    if(document.getElementById('practice').classList.contains('active')){
+      renderPracticeSlides();
+    }
+  }
+  function setDay(newDay){
+    day = newDay;
+    document.getElementById('dayWed').classList.toggle('active', day === 'wed');
+    document.getElementById('dayThu').classList.toggle('active', day === 'thu');
+    openSection = null;
     renderView();
     if(document.getElementById('practice').classList.contains('active')){
       renderPracticeSlides();
@@ -452,7 +504,11 @@
   }
   document.getElementById('langEn').addEventListener('click', ()=> setLang('en'));
   document.getElementById('langSv').addEventListener('click', ()=> setLang('sv'));
+  document.getElementById('dayWed').addEventListener('click', ()=> setDay('wed'));
+  document.getElementById('dayThu').addEventListener('click', ()=> setDay('thu'));
 
+  document.getElementById('dayWed').classList.toggle('active', day === 'wed');
+  document.getElementById('dayThu').classList.toggle('active', day === 'thu');
   renderView();
 })();
 </script>

@@ -53,18 +53,34 @@ anything. Every design decision should protect that:
   Google Fonts loaded via `<link>`, no build step, no dependencies to install.
   This is intentional — it needs to stay a single file you can drag-and-drop
   upload to GitHub's web UI if needed.
+- `archive/` — plain markdown, one file per past session (e.g.
+  `week-01-wed.md`), kept outside the app itself. See "Archiving past
+  sessions" below. Not read by `index.html` at runtime — purely a durable,
+  git-tracked record for the coach (and for Claude, in future sessions) to
+  look back at.
 
 ## Content model
 
 All content lives in a single `CONTENT` object near the top of the `<script>`
-block, keyed by language:
+block, keyed by language, then by day:
 
 ```js
 const CONTENT = {
-  en: { tipLabel, eyebrow, title, focus, sections: [...], tip },
-  sv: { /* same shape, Swedish */ }
+  en: {
+    wed: { tipLabel, eyebrow, title, focus, sections: [...], tip },
+    thu: { /* same shape */ }
+  },
+  sv: { /* same shape as en, Swedish */ }
 };
 ```
+
+Only the **current week's** Wednesday and Thursday sessions live in
+`CONTENT` — this stays small and fast to load. Everything before the current
+week belongs in `archive/`, not in `CONTENT`.
+
+A day with nothing planned yet uses `sections: []` and a `focus` note saying
+so (see the `thu` placeholder) — the UI shows an empty state and disables the
+swipe-view icon automatically when `sections` is empty.
 
 Each item in `sections` is:
 
@@ -112,6 +128,13 @@ reintroduce it unless asked.
 A language toggle (EN / SV) sits in the top bar and re-renders whichever view
 is currently active without resetting swipe position.
 
+A day toggle (WED / THU) sits next to it. On load it defaults to today's
+session — Thursday shows Thursday's plan, every other day of the week shows
+Wednesday's (either today's if it's Wednesday, or the next upcoming one
+otherwise) — via `defaultDay()` in the script. The coach can still tap the
+other day to preview it ahead of time; switching days re-renders instantly
+like the language toggle does, no reload.
+
 ## Visual design
 
 - Palette: matches Fryshuset Basket's actual club colors — black and white,
@@ -129,13 +152,22 @@ is currently active without resetting swipe position.
 - Mobile-first, max content width ~480px, generous tap targets, safe-area
   insets respected for notched phones.
 
-## Updating for a new week's session
+## Updating for a new day's or week's session
 
 This is the main ongoing task. When given a new session plan (usually as a
-markdown file like `session-2-*.md`):
+markdown file like `session-2-*.md`), first check whether it's replacing a
+day that's already in `CONTENT` (i.e. moving to a new week) or filling in a
+day that's currently a placeholder (e.g. this week's `thu` still says "TBD").
+
+**If it's replacing content already in `CONTENT`** (rolling into a new
+week): first archive the outgoing session — see "Archiving past sessions"
+below — then overwrite it.
+
+**Either way, to write the new session:**
 
 1. Translate its structure into the `sections` array for **both** `en` and
-   `sv` in `CONTENT`, following the body-text conventions above.
+   `sv`, under the correct day (`wed` or `thu`) in `CONTENT`, following the
+   body-text conventions above.
 2. Update `eyebrow`, `title`, `focus`, and `tip` for both languages.
 3. Keep section `id`s stable where a drill repeats week to week if it helps,
    but it's fine to regenerate them per session — nothing else in the app
@@ -146,12 +178,21 @@ markdown file like `session-2-*.md`):
    repo root on that branch, so a push is the entire deploy step. No build,
    no PR required for this solo-maintained repo unless asked otherwise.
 
+## Archiving past sessions
+
+Before overwriting a week's `wed` or `thu` entry in `CONTENT` with a new
+plan, save the outgoing one to `archive/week-NN-<day>.md` (e.g.
+`archive/week-01-wed.md`) — plain markdown, both languages, readable on its
+own without the app. Use the existing archive files as the template. This
+keeps `CONTENT` limited to the current week (fast, small `index.html`) while
+still preserving every past session in the repo, versioned by git.
+
 ## Explicitly out of scope unless asked
 
 - Persistent storage, accounts, or login of any kind.
 - A "mark done" / checklist / progress-tracking feature.
-- Multi-session history/archive inside the app itself (the coach keeps that
-  in Claude chat history and project files, deliberately, to keep this app
-  simple).
+- Multi-session history/archive inside the *app* itself — past sessions live
+  as markdown in `archive/`, not in `CONTENT` or in any in-app browsing UI,
+  deliberately, to keep the live app simple and fast.
 - A build step, framework, or dependency — this stays a single static HTML
   file on purpose.
