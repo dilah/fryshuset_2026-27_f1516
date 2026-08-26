@@ -160,8 +160,8 @@ day that's already in `CONTENT` (i.e. moving to a new week) or filling in a
 day that's currently a placeholder (e.g. this week's `thu` still says "TBD").
 
 **If it's replacing content already in `CONTENT`** (rolling into a new
-week): first archive the outgoing session — see "Archiving past sessions"
-below — then overwrite it.
+week): first archive the outgoing session — see "Archiving sessions" below
+— then overwrite it.
 
 **Either way, to write the new session:**
 
@@ -174,18 +174,27 @@ below — then overwrite it.
    depends on specific id values persisting across sessions.
 4. Double-check total `duration` across sections lines up with the intended
    session length (usually 60 min).
-5. Commit and push directly to `main` — GitHub Pages serves straight from the
+5. **Archive this same session** to `archive/week-NN-<day>.md` — see
+   "Archiving sessions" below. Do this immediately, every time content is
+   added or changed in `CONTENT`, not only when a week is about to be
+   overwritten — a day filled in from a placeholder (e.g. `thu` going from
+   "TBD" to real content) needs an archive entry created now just as much as
+   a day being replaced needs one saved before it's lost. There's no
+   in-session state to rely on to catch this later — the archive step lives
+   in this checklist so it isn't missed.
+6. Commit and push directly to `main` — GitHub Pages serves straight from the
    repo root on that branch, so a push is the entire deploy step. No build,
    no PR required for this solo-maintained repo unless asked otherwise.
 
-## Archiving past sessions
+## Archiving sessions
 
-Before overwriting a week's `wed` or `thu` entry in `CONTENT` with a new
-plan, save the outgoing one to `archive/week-NN-<day>.md` (e.g.
-`archive/week-01-wed.md`) — plain markdown, both languages, readable on its
-own without the app. Use the existing archive files as the template. This
-keeps `CONTENT` limited to the current week (fast, small `index.html`) while
-still preserving every past session in the repo, versioned by git.
+Every session that goes into `CONTENT` — new or replacing an old one — gets
+saved to `archive/week-NN-<day>.md` (e.g. `archive/week-01-wed.md`) as plain
+markdown, both languages, readable on its own without the app. Use the
+existing archive files as the template. This keeps `CONTENT` limited to the
+current week (fast, small `index.html`) while still preserving every session
+in the repo, versioned by git — do it as part of writing the session, not as
+an afterthought only triggered by an overwrite.
 
 ## Explicitly out of scope unless asked
 
