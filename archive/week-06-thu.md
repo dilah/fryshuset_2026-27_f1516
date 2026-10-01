@@ -1,8 +1,8 @@
 # Week 6 · Thursday · Play & Apply — The Rung-2 Read
 
-- **Day:** Thursday (Play/Apply), 17:30–19:00, Skarpatorpsskolan
-- **Eyebrow (EN):** WEEK 6 · THU 17:30–19
-- **Eyebrow (SV):** VECKA 6 · TORS 17:30–19
+- **Day:** Thursday (Play/Apply), 18:00–19:00, Skarpatorpsskolan
+- **Eyebrow (EN):** WEEK 6 · THU 18–19
+- **Eyebrow (SV):** VECKA 6 · TORS 18–19
 
 ## Focus
 
