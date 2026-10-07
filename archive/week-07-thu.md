@@ -1,4 +1,4 @@
-# Week 7 · Thursday · Play & Apply — The Rung-3 Read
+# Week 7 · Thursday · Play & Apply — Reset Day
 
 - **Day:** Thursday (Play/Apply), 18:00–19:00, Skarpatorpsskolan
 - **Eyebrow (EN):** WEEK 7 · THU 18–19
@@ -6,144 +6,203 @@
 
 ## Focus
 
-**EN:** Progression of small-sided games with real opposition, scaling up
-from a 2v1 recall of yesterday's 1v1 aggression into a full-court close.
-Game 3 stays the clean, unconstrained gating test — the same live-play
-silence from Wednesday's Stage A applies there specifically, and it alone
-decides whether rung 3 formally opens next week.
+**EN:** Reset the tone, keep everyone busy, and play small-sided games
+with real opposition. Nothing new technically.
 
-**SV:** Progression av småspel mot riktigt motstånd, som trappas upp från
-en 2mot1-repetition av gårdagens 1mot1-aggression till en
-helplansavslutning. Lek 3 förblir det rena, obegränsade grindtestet —
-samma tystnadsdisciplin från onsdagens Steg A gäller där specifikt, och
-den ensam avgör om steg 3 formellt öppnas nästa vecka.
+**SV:** Återställ tonen, håll alla sysselsatta, och spela småspel mot
+riktigt motstånd. Inget nytt tekniskt.
 
-## Note on duration
+## Revision note
 
-Section durations sum to 70 minutes against a 60-minute slot (18:00–19:00)
-— carried over from the source plan as given rather than trimmed. Flagged
-for the coach to confirm/adjust, since the mismatch is larger than usual.
+This replaces an earlier Week 7 Thursday plan ("Play & Apply — The
+Rung-3 Read") that was deployed before Wednesday's session ran. After a
+rough Wednesday, this reset version was written instead and overwrites it
+in place — same week, same slot, not a new week. Game 3 here is
+described as the rung-2 read (not rung-3, as the earlier draft had it),
+carried over verbatim from the coach's revision.
 
 ## Sections
 
-### 1. Opening Circle (4 min)
+### 1. Opening Circle: Reset (5 min)
 
 **EN:**
-Greet every player by name. Quick recall of Wednesday: marking/goal-side positioning and getting aggressive alone at the rim. Tell the group tonight is where all of that gets tested in real games, scaling up game by game.
+Own your part in one sentence.
 
-Say: "Igår jobbade ni på att läsa plan och vara aggressiva ensamma — ikväll får ni spela med allt det!"
+Say: "Igår tappade jag tålamodet, och det vill jag inte göra."
+
+Finish yesterday's thought.
+
+Say: "Jag sa att jag kunde ta den lätta vägen. Det vill jag inte, för jag tror ni kan bli riktigt bra. Men jag behöver er hjälp."
+
+Set the floor.
+
+Say: "Ni behöver inte älska basket varje dag. Men medan vi är här förstör vi inte för dem som vill träna."
+
+Agree the on/off signal (a clap pattern or raised hand = "game on"). Laughing is welcome between rounds, at water breaks and in the closing circle.
+
+Name the reward.
+
+Say: "Sista matchen får ni välja mellan två alternativ, om vi har fokus idag."
+
+Quiet check-in.
+
+Say: "Är det någon som känner sig dålig idag?"
+
+Anyone who's off takes a lighter role (referee, rotation helper) and joins in when ready.
 
 **SV:**
-Hälsa varje spelare vid namn. Snabb repetition av onsdagen: marking/goal-side-position och att vara aggressiv ensam vid korgen. Berätta för gruppen att ikväll är där allt det testas i riktiga spel, som trappas upp lek för lek.
+Ta ansvar för din del i en mening.
 
-Säg: "Igår jobbade ni på att läsa plan och vara aggressiva ensamma — ikväll får ni spela med allt det!"
+Säg: "Igår tappade jag tålamodet, och det vill jag inte göra."
+
+Avsluta gårdagens tanke.
+
+Säg: "Jag sa att jag kunde ta den lätta vägen. Det vill jag inte, för jag tror ni kan bli riktigt bra. Men jag behöver er hjälp."
+
+Sätt golvet.
+
+Säg: "Ni behöver inte älska basket varje dag. Men medan vi är här förstör vi inte för dem som vill träna."
+
+Kom överens om på/av-signalen (ett klappmönster eller en uppräckt hand = "spel igång"). Skratt är välkommet mellan omgångar, vid vattenpauser och i avslutningscirkeln.
+
+Namnge belöningen.
+
+Säg: "Sista matchen får ni välja mellan två alternativ, om vi har fokus idag."
+
+Tyst incheckning.
+
+Säg: "Är det någon som känner sig dålig idag?"
+
+Den som inte är på topp tar en lättare roll (domare, byteshjälp) och är med igen när hon är redo.
 
 ### 2. Warm-Up (8 min)
 
 **EN:**
-Same combo as Wednesday, shortened.
+Vote in under 30 seconds. Say both options before you say anything about choosing.
 
-Partner Mirror (3–4 min): one leads, one mimics — side lunges, squats, jumps.
+Say: "Alternativ A: Linjekul med boll. Alternativ B: Hav-Skepp-Land. Räck upp handen för A eller B."
 
-BasketSmart control (4 min): Plankan, Knäböj med boll mot tak, Utfallssteg med boll mot tak.
+Majority wins and it's final. If someone pitches her own game, say:
+
+Say: "Det är inte ett av alternativen idag. Idéburken."
+
+Play the winner for 5–6 minutes, in short rounds. Each round runs 60–90 seconds, and everyone is back in at the start of the next one. If you tag or call someone out, she does something small on the spot (5 dribbles or the self-toss) and watches, so nobody waits more than a minute. At the end of each round, celebrate the last three standing, not just one winner.
+
+Option A — Linjekul med boll:
+- Everyone dribbles a ball and may only move on the lines. One or two taggers (with a ball too) try to touch the others.
+- Tag by touch only, with no pushing. Use only the three-point line and the baseline, so they don't pile onto one stretch of line.
+- A tagged player is out for the round (5 dribbles in the corner), then back in for the next one.
+
+Option B — Hav-Skepp-Land:
+- Everyone starts on one baseline. Baseline = Hav, midline = Skepp, far baseline = Land. Call a command and they react as fast as they can.
+- Commands: Hav / Skepp / Land (run to that place), Bommen kommer (lie flat on your stomach, then up fast), Kanonkula (curl up like a cannonball, then up fast), Kapten kommer (stand at attention), Hajen kommer (jump up off the floor), Piratdisco (dance), Livrädda! (lie on your back, then up fast).
+- Harder: add more commands or shorten the time between them.
+- Last woman standing: the last to do a command is out for the round. If elimination starts bringing the laughter down, switch to keeping everyone in instead — the last one does 5 frog jumps, then jumps back in.
+
+Control exercises (2 min), fixed: Knäböj and Utfallssteg with the ball overhead.
+
+Say: "Det här gör vi alltid, det är inte ett val."
 
 **SV:**
-Samma kombination som onsdagen, förkortad.
+Rösta på under 30 sekunder. Säg båda alternativen innan du säger något om att välja.
 
-Partner-spegel (3–4 min): en leder, en imiterar — sidohopp, knäböj, hopp.
+Säg: "Alternativ A: Linjekul med boll. Alternativ B: Hav-Skepp-Land. Räck upp handen för A eller B."
 
-BasketSmart-kontroll (4 min): Plankan, Knäböj med boll mot tak, Utfallssteg med boll mot tak.
+Majoriteten vinner och det är slutgiltigt. Om någon föreslår sin egen lek, säg:
 
-### 3. Game 1 — 2v1 Give-and-Go Recall (10 min)
+Säg: "Det är inte ett av alternativen idag. Idéburken."
+
+Spela vinnaren i 5–6 minuter, i korta omgångar. Varje omgång pågår 60–90 sekunder, och alla är med igen vid nästa omgångs start. Om du tar eller ropar ut någon gör hon något litet på stället (5 dribblingar eller självkastet) och tittar på, så ingen väntar mer än en minut. I slutet av varje omgång, fira de tre sista kvar, inte bara en vinnare.
+
+Alternativ A — Linjekul med boll:
+- Alla dribblar en boll och får bara röra sig på linjerna. En eller två "taggers" (med boll också) försöker röra de andra.
+- Tag bara genom beröring, ingen knuff. Använd bara trepoängslinjen och baslinjen, så de inte klumpar ihop sig på en sträcka av linjen.
+- En taggad spelare är ute för omgången (5 dribblingar i hörnet), sedan med igen nästa omgång.
+
+Alternativ B — Hav-Skepp-Land:
+- Alla börjar på en baslinje. Baslinje = Hav, mittlinje = Skepp, bortre baslinje = Land. Ropa ett kommando och de reagerar så snabbt de kan.
+- Kommandon: Hav / Skepp / Land (spring dit), Bommen kommer (lägg dig raklång på magen, sedan upp snabbt), Kanonkula (krulla ihop dig som en kanonkula, sedan upp snabbt), Kapten kommer (stå i givakt), Hajen kommer (hoppa upp från golvet), Piratdisco (dansa), Livrädda! (lägg dig på rygg, sedan upp snabbt).
+- Svårare: lägg till fler kommandon eller korta tiden mellan dem.
+- Sista kvar: den sista att göra ett kommando är ute för omgången. Om elimineringen börjar ta bort skratten, byt till att hålla alla kvar istället — den sista gör 5 grodhopp, sedan hoppar hon in igen.
+
+Kontrollövningar (2 min), fasta: Knäböj och Utfallssteg med bollen över huvudet.
+
+Säg: "Det här gör vi alltid, det är inte ett val."
+
+### 3. Game 1 — 2v1 Give-and-Go (8 min)
 
 **EN:**
-Focus: direct recall of yesterday's 1v1 aggression, now with a teammate back in the picture — the read is when to keep attacking alone and when to use her.
-Setup: two attackers, one defender, starting near midline.
+Focus: two attackers against one defender, numbers favouring the attackers — Attacker 1 drives, passes as the defender commits, Attacker 2 cuts to the rim.
+Setup: 2v1 groups, mixed so no two of the most contagious girls are together, and a focused girl in each group.
 
-How: Attacker 1 drives at the defender and passes off as the defender commits; Attacker 2 should already be cutting by then.
-
-Say: "Igår var ni ensamma och aggressiva. Idag har ni en till spelare — använd henne!"
-
-Praise the cut, not just the finish.
+How: keep the explanation to one sentence and show it rather than talk. Praise the cut by name.
 
 **SV:**
-Fokus: direkt repetition av gårdagens 1mot1-aggression, nu med en lagkompis tillbaka i bilden — läsningen är när man ska fortsätta anfalla ensam och när man ska använda henne.
-Uppställning: två anfallare, en försvarare, start nära mittlinjen.
+Fokus: två anfallare mot en försvarare, numerärt övertag för anfallarna — Anfallare 1 kör, passar av när försvararen tar bollen, Anfallare 2 skär mot korgen.
+Uppställning: 2mot1-grupper, blanda så att inga två av de mest smittsamt busiga tjejerna är tillsammans, och sätt en fokuserad tjej i varje grupp.
 
-Så här: Anfallare 1 kör mot försvararen och passar av när försvararen tar bollen; Anfallare 2 ska redan vara på väg in i en skärning då.
+Så här: håll förklaringen till en mening och visa istället för att prata. Beröm skärningen vid namn.
 
-Säg: "Igår var ni ensamma och aggressiva. Idag har ni en till spelare — använd henne!"
-
-Beröm skärningen, inte bara avslutet.
-
-### 4. Game 2 — 2v2 (12 min)
+### 4. Game 2 — 2v2 (10 min)
 
 **EN:**
-Focus: spacing plus marking/goal-side positioning, at a smaller scale before the full test in Game 3 — a guided-size rep rather than the open read.
-Setup: half court, 2v2, rotating pairs through regularly.
+Focus: first-to-1-basket, winners stay and losers rotate off, so goofing costs the team straight away. Short rounds mean nobody waits long.
+Setup: half court, 2v2, rotating groups.
 
-How: live 2v2, dribble allowed, normal rules. Watch for the same marking/goal-side read from Wednesday's Stage A carrying over now that there's a real opponent and a real teammate to coordinate with.
+How: stay silent on positioning and praise effort by name. Use one quick pause only if a natural moment comes.
 
-Peppa moment: name a defensive positioning read that held up.
+Say: "Vad hände precis innan hon var öppen?"
 
 **SV:**
-Fokus: spacing plus marking/goal-side-position, i mindre skala innan det fulla testet i Lek 3 — en guidad repetition snarare än den öppna läsningen.
-Uppställning: halvplan, 2mot2, rotera paren regelbundet.
+Fokus: första till 1 korg, vinnarna stannar och förlorarna roterar av, så fjant kostar laget direkt. Korta omgångar gör att ingen väntar länge.
+Uppställning: halvplan, 2mot2, roterande grupper.
 
-Så här: levande 2mot2, dribbling tillåten, vanliga regler. Titta efter samma marking/goal-side-läsning från onsdagens Steg A som förs över nu när det finns en riktig motståndare och en riktig lagkompis att samordna med.
+Så här: var tyst om positionering och beröm kämpaglöd vid namn. Använd en snabb paus bara om ett naturligt ögonblick dyker upp.
 
-Peppa-stund: namnge en försvarspositionerings-läsning som höll.
+Säg: "Vad hände precis innan hon var öppen?"
 
-### 5. Game 3 — 3v3, Unconstrained (16 min)
+### 5. Game 3 — 3v3, Unconstrained (14 min)
 
 **EN:**
-Focus: the clean gating read. No clock, no zone, no coaching — signals only, the same discipline as Wednesday's Stage A live play. This decides whether rung 3 formally opens next week.
-Setup: half court, 3v3, groups rotating every few minutes so different combinations are tested together.
+Focus: no clock, no zone, signals only. Count it as the rung-2 read only if they're fresh and focused today. If energy or focus is low, play it and don't log it — the plan already allows one more Thursday.
+Setup: half court, 3v3, rotating groups.
 
-How: free play, standard rules, no coaching during live play — observe only. Watch for the same things Stage A was built to surface: marking/goal-side positioning holding up without the drill's constraints forcing it, and whether it survives real pace and real opposition.
-
-Say: "Ha kul, testa saker — och peppa varandra!" — then stay quiet and watch.
+How: free play, no coaching during live play — observe only.
 
 **SV:**
-Fokus: det rena grindtestet. Ingen klocka, ingen zon, ingen coachning — bara tecken, samma disciplin som onsdagens Steg A-spel. Det här avgör om steg 3 formellt öppnas nästa vecka.
-Uppställning: halvplan, 3mot3, grupper roterar var några minuter så olika kombinationer testas tillsammans.
+Fokus: ingen klocka, ingen zon, bara tecken. Räkna den som steg-2-läsningen bara om de är pigga och fokuserade idag. Om energi eller fokus är lågt, spela den och logga den inte — planen tillåter redan ytterligare en torsdag.
+Uppställning: halvplan, 3mot3, roterande grupper.
 
-Så här: fri lek, vanliga regler, ingen coachning under levande spel — bara observera. Titta efter samma saker Steg A byggdes för att visa: om marking/goal-side-position håller utan övningens begränsningar som tvingar fram det, och om det överlever riktigt tempo och riktigt motstånd.
+Så här: fri lek, ingen coachning under levande spel — bara observera.
 
-Säg: "Ha kul, testa saker — och peppa varandra!" — håll dig sedan tyst och titta.
-
-### 6. Game 4 — Full-Court 4v4, Rotating Squads (16 min)
+### 6. Game 4 — The Closed A/B Choice (10 min)
 
 **EN:**
-Focus: framed as preview, not test — match-prep and equal-playing-time rehearsal rather than a read on anything specific. Live coaching is fair game here, the one place this week you can actually talk through what you're seeing.
-Setup: full court, two 4-player teams live, extras rotating in on a timer with assigned temporary squads, continuing the rotation rehearsal from recent weeks.
+Focus: the closed A/B choice — the reward named in the opening circle, if focus held up tonight.
+Setup: say both options before you say the word "choose."
 
-How: standard 4v4, dribble allowed, normal defense both ends, running score. Coach actively: call out spacing, marking, and anything else worth naming live, since this is the one block this week built for it.
+Say: "Alternativ A: helbana 4 mot 4 med roterande lag. Alternativ B: halvplan 3 mot 3, vinnarna stannar. Räck upp handen för A eller B."
 
-Say: "Vem är fri? Peppa varandra!"
+Majority wins and it's final. If the session was messy, skip the vote and pick it yourself without a speech. Rotation in either version doubles as rest and as Oct 17 rotation practice.
 
 **SV:**
-Fokus: inramat som förhandsvisning, inte test — matchförberedelse och repetition av jämn speltid snarare än en läsning av något specifikt. Levande coachning är tillåtet här, den enda plats den här veckan du faktiskt kan prata igenom vad du ser.
-Uppställning: helplan, två 4-spelarlag levande, extra spelare roterar in på en timer med tilldelade tillfälliga lag, fortsätter rotationsrepetitionen från de senaste veckorna.
+Fokus: det stängda A/B-valet — belöningen som namngavs i öppningscirkeln, om fokuset höll ikväll.
+Uppställning: säg båda alternativen innan du säger ordet "välj".
 
-Så här: vanligt 4mot4, dribbling tillåten, vanligt försvar i båda ändarna, löpande poängräkning. Coacha aktivt: peka ut spacing, marking, och allt annat värt att namnge levande, eftersom det här är det enda blocket den här veckan byggt för det.
+Säg: "Alternativ A: helbana 4 mot 4 med roterande lag. Alternativ B: halvplan 3 mot 3, vinnarna stannar. Räck upp handen för A eller B."
 
-Säg: "Vem är fri? Peppa varandra!"
+Majoriteten vinner och det är slutgiltigt. Om passet var stökigt, hoppa över röstningen och välj själv utan tal. Rotationen i båda versionerna fungerar både som vila och som övning inför bytena den 17 oktober.
 
-### 7. Closing Circle (4 min)
+### 7. Closing Circle (5 min)
 
 **EN:**
-Behavior callback, tied to one of the three behaviors named Wednesday.
-
-Name anything specific you saw in Game 3 — that's the one read that matters most tonight.
+Name two or three specific good things by name, then finish on something fun. No running.
 
 **SV:**
-Beteende-återkoppling, kopplad till ett av de tre beteendena som nämndes på onsdagen.
-
-Namnge något specifikt du såg i Lek 3 — det är den läsning som betyder mest ikväll.
+Namnge två eller tre specifika bra saker vid namn, avsluta sedan på något roligt. Inget springande.
 
 ## Coach's tip
 
-**EN:** Game 3 carries the same silence discipline as Wednesday's Stage A — no coaching, signals only, and it's genuinely the only signal used to decide whether rung 3 opens next week. Game 4 is the one place this week you're allowed to coach live, so save the talking for there.
+**EN:** If an assistant is there, ask them to stand near whichever group is drifting, with no correcting, just presence. If arguing starts: "Prova en gång, sen berättar du vad du tycker." If energy is low from the start, drop Game 4 and extend Games 2 and 3 with more resting rotations.
 
-**SV:** Lek 3 har samma tystnadsdisciplin som onsdagens Steg A — ingen coachning, bara tecken, och det är verkligen det enda tecknet som används för att avgöra om steg 3 öppnas nästa vecka. Lek 4 är den enda plats den här veckan du får coacha levande, så spara pratet till dit.
+**SV:** Om en assistent är där, be dem stå nära den grupp som driver iväg, utan att rätta till, bara närvaro. Om bråk börjar: "Prova en gång, sen berättar du vad du tycker." Om energin är låg redan från start, släpp Lek 4 och förläng Lek 2 och 3 med fler vilorotationer.
