@@ -26,13 +26,9 @@ carried over verbatim from the coach's revision.
 ### 1. Opening Circle: Reset (5 min)
 
 **EN:**
-Own your part in one sentence.
+Open with togetherness, not an apology — we're all here to play and learn basketball, and we do it together.
 
-Say: "Igår tappade jag tålamodet, och det vill jag inte göra."
-
-Finish yesterday's thought.
-
-Say: "Jag sa att jag kunde ta den lätta vägen. Det vill jag inte, för jag tror ni kan bli riktigt bra. Men jag behöver er hjälp."
+Say: "Vi är alla här för att spela och lära oss basket tillsammans — vi lyckas tillsammans, och vi misslyckas tillsammans."
 
 Set the floor.
 
@@ -51,13 +47,9 @@ Say: "Är det någon som känner sig dålig idag?"
 Anyone who's off takes a lighter role (referee, rotation helper) and joins in when ready.
 
 **SV:**
-Ta ansvar för din del i en mening.
+Öppna med gemenskap, inte en ursäkt — vi är alla här för att spela och lära oss basket, och vi gör det tillsammans.
 
-Säg: "Igår tappade jag tålamodet, och det vill jag inte göra."
-
-Avsluta gårdagens tanke.
-
-Säg: "Jag sa att jag kunde ta den lätta vägen. Det vill jag inte, för jag tror ni kan bli riktigt bra. Men jag behöver er hjälp."
+Säg: "Vi är alla här för att spela och lära oss basket tillsammans — vi lyckas tillsammans, och vi misslyckas tillsammans."
 
 Sätt golvet.
 
