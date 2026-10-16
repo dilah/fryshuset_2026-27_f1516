@@ -59,6 +59,22 @@ anything. Every design decision should protect that:
   git-tracked record for the coach (and for Claude, in future sessions) to
   look back at.
 
+## Bagis lineup planner (`lineup.html`)
+
+A second, separate static page at
+`https://dilah.github.io/fryshuset_2026-27_f1516/lineup.html`. It is a tournament
+lineup planner for the Bagarmossen day (F2015 Svart/Vit and F2016): tap players into
+each 5-minute period (4 on court, 4 periods) and see per-match and whole-day minutes
+live. Self-contained like `index.html`: one file, no build, no accounts.
+
+- Lineups are saved with `localStorage` in the browser (key `bagis-lineup-v1`), so they
+  stay on that device only. This is the one deliberate exception to the "no storage"
+  rule above: there is no backend and no login, and the page works if storage is
+  blocked. Do not turn it into a backend or database.
+- The roster, match times and rosters per match live in the `ROSTER` / `MATCHES`
+  constants at the top of its `<script>`. Edit those for a new tournament.
+- `index.html` (the practice plan) is untouched and keeps its URL.
+
 ## Content model
 
 All content lives in a single `CONTENT` object near the top of the `<script>`

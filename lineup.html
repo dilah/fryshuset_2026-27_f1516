@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bagis Lineup Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800&display=swap">
+<style>
+/* Lineup card: sticky match tabs, a player x period tap grid, live minute counters.
+   Court-blue accent on a cool paper grey. Amber only means "incomplete or behind". */
+:root{
+  --bg:#EDF0F4; --surface:#FFFFFF; --surface-2:#F3F5F9; --ink:#10192B; --muted:#586376; --line:#D2D9E3;
+  --accent:#1D57C4; --on-accent:#FFFFFF; --accent-soft:#DCE7FB;
+  --good:#17724A; --good-soft:#DDF1E6; --warn:#8F4B00; --warn-soft:#FBEBCF;
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --cell:clamp(40px,10.5vw,54px);
+  --cols:minmax(0,1fr) repeat(4,var(--cell)) 36px 50px;
+  --tcols:minmax(0,1fr) repeat(6,30px) 58px;
+  --bar:56px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C121B; --surface:#151D2A; --surface-2:#1C2635; --ink:#E8EDF5; --muted:#95A2B5; --line:#2B374A;
+    --accent:#6FA3FF; --on-accent:#07142B; --accent-soft:#1B2E52;
+    --good:#5BD196; --good-soft:#163325; --warn:#F0B35A; --warn-soft:#3A2A10;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C121B; --surface:#151D2A; --surface-2:#1C2635; --ink:#E8EDF5; --muted:#95A2B5; --line:#2B374A;
+  --accent:#6FA3FF; --on-accent:#07142B; --accent-soft:#1B2E52;
+  --good:#5BD196; --good-soft:#163325; --warn:#F0B35A; --warn-soft:#3A2A10;
+  color-scheme:dark;
+}
+
+:root{color-scheme:light}
+html{padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); font:500 15px/1.4 var(--body);
+  padding-block:14px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-text-size-adjust:100%;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:12px}
+h1{font:800 30px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;margin:0;text-wrap:balance}
+.top .sub{margin:6px 0 0;color:var(--muted);font-size:13.5px}
+.stat{flex:none;display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--body);padding:6px 10px;border-radius:14px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.stat::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.stat[data-s="saved"]{color:var(--good)}
+.stat[data-s="saved"]::before{background:var(--good)}
+.stat[data-s="saving"]::before{background:var(--accent)}
+.stat[data-s="local"],.stat[data-s="readonly"],.stat[data-s="error"]{color:var(--warn);background:var(--warn-soft);border-color:transparent}
+.stat[data-s="local"]::before,.stat[data-s="readonly"]::before,.stat[data-s="error"]::before{background:var(--warn)}
+
+/* tabs */
+.tabs{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20; height:var(--bar);
+  display:flex; align-items:center; gap:6px; overflow-x:auto; scrollbar-width:none;
+  background:var(--bg); border-bottom:1px solid var(--line);
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:none; display:flex; align-items:center; gap:7px; height:40px; padding:0 14px;
+  border:1.5px solid var(--line); border-radius:20px; background:var(--surface); color:var(--ink);
+  font:600 14.5px/1 var(--body); cursor:pointer; white-space:nowrap;
+}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dot{width:10px;height:10px;border:2px solid currentColor;border-radius:50%;flex:none}
+.dot.svart{background:currentColor}
+.dot.f16{border-radius:2px;transform:rotate(45deg)}
+
+/* match header */
+.panel{padding-top:16px}
+.mh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.mh h2{font:800 36px/1 var(--display);letter-spacing:.01em;text-transform:uppercase;margin:0}
+.age{font:700 12px/1 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.meta{margin:6px 0 0;color:var(--muted)}
+.strip{margin:12px 0 0;padding:9px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--line);font-size:14px;font-variant-numeric:tabular-nums}
+.strip b{font-weight:700}
+.note{margin:10px 0 0;padding:9px 12px;border-radius:10px;background:var(--accent-soft);font-size:13.5px}
+
+/* grid */
+.card{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.ghead{
+  position:sticky; top:calc(env(safe-area-inset-top,0px) + var(--bar)); z-index:10;
+  display:grid; grid-template-columns:var(--cols); align-items:end;
+  padding:8px 0 6px; background:var(--surface); border-bottom:2px solid var(--ink); border-radius:12px 12px 0 0;
+}
+.hl{font:700 11px/1.15 var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:center}
+.hl:first-child{text-align:left;padding-left:12px}
+.pc{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pc b{font:800 17px/1 var(--display);letter-spacing:.02em}
+.cnt{font:700 11px/1 var(--body);padding:3px 7px;border-radius:9px;background:var(--surface-2);color:var(--muted);font-variant-numeric:tabular-nums}
+.cnt.ok{background:var(--good-soft);color:var(--good)}
+.cnt.part{background:var(--warn-soft);color:var(--warn)}
+.cnt.flash{box-shadow:0 0 0 2px var(--warn)}
+
+.row{display:grid;grid-template-columns:var(--cols);align-items:center;min-height:52px;border-bottom:1px solid var(--line)}
+.pname{min-width:0;padding:6px 6px 6px 12px}
+.n{display:block;font:600 16px/1.15 var(--body);overflow-wrap:anywhere}
+.tgs{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.tg{font:600 11px/1.2 var(--body);padding:2px 6px;border-radius:6px;border:0;background:var(--surface-2);color:var(--muted)}
+.tg.ex{background:var(--accent-soft);color:var(--accent)}
+.tg.near{background:var(--warn-soft);color:var(--warn)}
+.tg.lock{background:transparent;padding-left:0;color:var(--muted)}
+button.tg.rm{cursor:pointer;text-decoration:underline;background:transparent}
+
+.cw{display:flex;padding:4px 3px}
+.cell{
+  flex:1; min-width:0; height:42px; border-radius:9px; border:1.5px solid var(--line);
+  background:var(--surface-2); color:var(--on-accent); cursor:pointer; padding:0;
+  font:800 18px/1 var(--display); font-variant-numeric:tabular-nums;
+  transition:transform .08s ease, background-color .08s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.cell[aria-pressed="true"]{background:var(--accent);border-color:var(--accent)}
+.cell:active:not(:disabled){transform:scale(.93)}
+.cell:disabled{cursor:default;opacity:.55}
+.cell.lk{opacity:1;cursor:not-allowed;background:repeating-linear-gradient(135deg,transparent 0 4px,var(--line) 4px 5px)}
+.m{text-align:center;color:var(--muted);font-variant-numeric:tabular-nums;font-size:14px}
+.d{text-align:center;line-height:1.05;font-variant-numeric:tabular-nums}
+.d b{display:block;font:800 21px/1 var(--display)}
+.dl{display:block;margin-top:2px;font:600 11px/1 var(--body);color:var(--muted)}
+.dl.down{color:var(--warn)}
+.dl.up{color:var(--accent)}
+
+.foot{padding:12px;display:flex;flex-direction:column;gap:10px}
+.foot .lbl{font:700 11px/1 var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px dashed var(--line);background:transparent;border-radius:16px;padding:7px 12px;font:600 14px/1 var(--body);cursor:pointer}
+.chip:disabled,.ghost:disabled{opacity:.5;cursor:default}
+.ghost{align-self:flex-start;border:1.5px solid var(--line);background:transparent;border-radius:10px;padding:9px 14px;font:600 14px/1 var(--body);cursor:pointer}
+.ghost.danger{background:var(--warn-soft);border-color:transparent;color:var(--warn)}
+.legend{margin:12px 2px 0;color:var(--muted);font-size:13px}
+
+/* totals */
+.thead{
+  position:sticky; top:calc(env(safe-area-inset-top,0px) + var(--bar)); z-index:10;
+  display:grid; grid-template-columns:var(--tcols); align-items:end;
+  padding:8px 0 6px; background:var(--surface); border-bottom:2px solid var(--ink); border-radius:12px 12px 0 0;
+}
+.thead .hl{font-size:10px;letter-spacing:.02em;padding:0}
+.thead .hl:first-child{padding-left:12px}
+.trow{display:grid;grid-template-columns:var(--tcols);align-items:center;min-height:50px;border-bottom:1px solid var(--line)}
+.tm{text-align:center;font:600 14px/1 var(--body);font-variant-numeric:tabular-nums}
+.tm.z{color:var(--muted);opacity:.6}
+.tm.sep,.hl.sep{border-left:1px solid var(--line)}
+.dd{padding:6px 10px 6px 6px}
+.dd .t{display:flex;justify-content:space-between;align-items:baseline;gap:4px;font-variant-numeric:tabular-nums}
+.dd b{font:800 20px/1 var(--display)}
+.dd .dl{margin:0}
+.bar{display:block;height:4px;margin-top:5px;border-radius:2px;background:var(--line);overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent)}
+.bar.down span{background:var(--warn)}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion: reduce){.cell{transition:none}.cell:active:not(:disabled){transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Bagis Lineup Planner</h1>
+      <p class="sub">F2015 and F2016 · 4 on court · 4 periods of 5 min</p>
+    </div>
+    <span class="stat" id="stat" data-s="loading" role="status">Loading…</span>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Matches"></nav>
+  <main class="panel" id="panel" role="tabpanel"></main>
+  <div class="sr" id="live" aria-live="polite"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const PERIODS = ['p1','p2','p3','p4'];
+const MIN = 5, SLOTS = 4;
+
+const ROSTER = {
+  bibi:'Bibi', cleo:'Cleo', cora:'Cora', isabelle:'Isabelle', celine:'Celine', lydia:'Lydia',
+  iris:'Iris', amani:'Amani', inez:'Inez', klaras:'KlaraS', judit:'Judit', daniyah:'Daniyah', klarap:'KlaraP'
+};
+const byName = (a, b) => ROSTER[a].localeCompare(ROSTER[b], 'sv');
+const ALL = Object.keys(ROSTER).sort(byName);
+const SVART = ['bibi','cleo','cora','isabelle','celine','lydia'];
+const VIT = ['iris','amani','inez','klaras','judit','daniyah'];
+const F15_SVART = ALL.filter(id => id !== 'klarap');
+const F15_VIT = ALL.filter(id => id !== 'lydia' && id !== 'klarap');
+const F16 = ALL.filter(id => id !== 'lydia');
+
+const MATCHES = [
+  { id:'svart1', tab:'Svart 12:00', dot:'svart', age:'F2015', team:'Svart', time:'12:00', court:'Blå Bana 2', opp:'Hammarbyhöjden',
+    base:SVART, extra:[], pool:F15_SVART, clash:'vit1' },
+  { id:'vit1', tab:'Vit 12:00', dot:'vit', age:'F2015', team:'Vit', time:'12:00', court:'Röd Bana 2', opp:'Hägerstenshamnen',
+    base:VIT, extra:[], pool:F15_VIT, clash:'svart1' },
+  { id:'svart2', tab:'Svart 13:00', dot:'svart', age:'F2015', team:'Svart', time:'13:00', court:'Blå Bana 2', opp:'Tullgård Vit',
+    base:SVART, extra:['iris','amani'], pool:F15_SVART, near:'vit2',
+    nearNote:'Vit plays at 13:30 on the same court, about 10 minutes after this match ends. Girls in both get a short break.' },
+  { id:'vit2', tab:'Vit 13:30', dot:'vit', age:'F2015', team:'Vit', time:'13:30', court:'Blå Bana 2', opp:'Örby',
+    base:VIT, extra:['celine','isabelle'], pool:F15_VIT, near:'svart2',
+    nearNote:'Svart plays at 13:00 on the same court and finishes about 10 minutes before this match. Girls in both get a short break.' },
+  { id:'f16a', tab:'F16 15:30', dot:'f16', age:'F2016', team:'Bagarmossen', time:'15:30', court:'Röd Bana 1', opp:'Hammarby Södra',
+    base:F16, extra:[], pool:F16 },
+  { id:'f16b', tab:'F16 16:00', dot:'f16', age:'F2016', team:'Bagarmossen', time:'16:00', court:'Röd Bana 2', opp:'Linde',
+    base:F16, extra:[], pool:F16 }
+];
+const MBY = {};
+MATCHES.forEach(m => { MBY[m.id] = m; });
+
+/* ---------- state ---------- */
+function emptyState(){
+  const s = {};
+  MATCHES.forEach(m => { s[m.id] = {}; PERIODS.forEach(p => { s[m.id][p] = []; }); });
+  return s;
+}
+function normalize(doc){
+  const s = emptyState();
+  const src = doc && typeof doc === 'object' && doc.lineups && typeof doc.lineups === 'object' ? doc.lineups : {};
+  MATCHES.forEach(m => {
+    const ms = src[m.id];
+    if (!ms || typeof ms !== 'object') return;
+    PERIODS.forEach(p => {
+      const list = Array.isArray(ms[p]) ? ms[p] : [];
+      list.forEach(id => {
+        if (typeof id === 'string' && m.pool.includes(id) && !s[m.id][p].includes(id) && s[m.id][p].length < SLOTS) {
+          s[m.id][p].push(id);
+        }
+      });
+    });
+  });
+  return s;
+}
+
+let state = emptyState();
+let added = {};                 // extra rows opened from "other team", per match
+let tab = 'svart1';
+try {
+  const t = localStorage.getItem('bagis-tab');
+  if (t && (t === 'totals' || MBY[t])) tab = t;
+} catch (e) {}
+
+let ready = true, mode = 'live';
+let armed = null, armT = null;
+
+/* ---------- numbers ---------- */
+const periodsOf = (mid, id) => PERIODS.filter(p => state[mid][p].includes(id)).length;
+const minsIn = (mid, id) => periodsOf(mid, id) * MIN;
+const dayOf = id => MATCHES.reduce((s, m) => s + minsIn(m.id, id), 0);
+const lockedBy = (m, id) => !!(m.clash && periodsOf(m.clash, id) > 0);
+
+function stats(){
+  const days = ALL.map(dayOf);
+  const avg = days.reduce((a, b) => a + b, 0) / ALL.length;
+  const min = Math.min.apply(null, days), max = Math.max.apply(null, days);
+  const names = v => {
+    const l = ALL.filter((id, i) => days[i] === v);
+    return l.length > 3 ? l.length + ' players' : l.map(id => ROSTER[id]).join(', ');
+  };
+  return { avg, min, max, lowN:names(min), highN:names(max) };
+}
+function deltaInfo(d, avg){
+  const x = d - avg, r = Math.round(x);
+  return {
+    cls: Math.abs(x) <= 2.5 ? 'even' : (x < 0 ? 'down' : 'up'),
+    txt: (r > 0 ? '+' : r < 0 ? '−' : '±') + Math.abs(r)
+  };
+}
+
+/* ---------- saving (this device only, no account) ---------- */
+const KEY = 'bagis-lineup-v1';
+const LABEL = { saved:'Saved on this device', local:'Not saved' };
+const TITLE = {
+  saved:'Lineups are kept in this browser. Other phones do not see them.',
+  local:'This browser blocks saving. Lineups last only while the page is open.'
+};
+function setStatus(s){
+  const el = $('stat');
+  el.dataset.s = s; el.textContent = LABEL[s]; el.title = TITLE[s] || '';
+}
+function persist(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify({ v:1, lineups:state }));
+    setStatus('saved');
+  } catch (e) { setStatus('local'); }
+}
+function load(){
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) state = normalize(JSON.parse(raw));
+    setStatus('saved');
+  } catch (e) { setStatus('local'); }
+}
+
+/* ---------- editing ---------- */
+const editable = () => ready && mode !== 'readonly';
+
+function flash(mid, p){
+  const el = document.querySelector('[data-cnt="' + mid + '-' + p + '"]');
+  if (el) { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 900); }
+  $('live').textContent = 'Period ' + (PERIODS.indexOf(p) + 1) + ' already has ' + SLOTS + ' players. Remove one first.';
+}
+function toggle(mid, p, id){
+  if (!editable()) return;
+  const m = MBY[mid];
+  if (lockedBy(m, id)) return;
+  const list = state[mid][p], i = list.indexOf(id);
+  if (i >= 0) list.splice(i, 1);
+  else {
+    if (list.length >= SLOTS) { flash(mid, p); return; }
+    list.push(id);
+  }
+  persist();
+  renderPanel();
+}
+function clearAct(act, mid){
+  if (!editable()) return;
+  if (act === 'clearall') { state = emptyState(); added = {}; }
+  else { PERIODS.forEach(p => { state[mid][p] = []; }); added[mid] = new Set(); }
+  persist();
+}
+
+/* ---------- views ---------- */
+function rowsFor(m){
+  const baseSet = new Set(m.base.concat(m.extra));
+  const addedSet = added[m.id] || new Set();
+  const others = ALL.filter(id => m.pool.includes(id) && !baseSet.has(id) && (periodsOf(m.id, id) > 0 || addedSet.has(id)));
+  return { base: m.base.slice().sort(byName), extra: m.extra.slice().sort(byName), others };
+}
+
+function rowHTML(m, id, kind, st){
+  const locked = lockedBy(m, id);
+  const mm = minsIn(m.id, id), dd = dayOf(id), dl = deltaInfo(dd, st.avg);
+  let tg = '';
+  if (locked) tg += '<span class="tg lock">in ' + esc(MBY[m.clash].tab) + '</span>';
+  else {
+    if (kind !== 'base') tg += '<span class="tg ex">extra</span>';
+    if (m.near && periodsOf(m.id, id) > 0 && periodsOf(m.near, id) > 0) tg += '<span class="tg near">also ' + esc(MBY[m.near].time) + '</span>';
+  }
+  if (kind === 'other' && added[m.id] && added[m.id].has(id) && periodsOf(m.id, id) === 0) {
+    tg += '<button type="button" class="tg rm" data-act="rm" data-m="' + m.id + '" data-id="' + id + '" data-key="rm-' + m.id + '-' + id + '">remove</button>';
+  }
+  const cells = PERIODS.map((p, i) => {
+    const on = state[m.id][p].includes(id);
+    const dis = locked || !editable();
+    return '<div class="cw"><button type="button" class="cell' + (locked ? ' lk' : '') + '" data-act="cell" data-m="' + m.id +
+      '" data-p="' + p + '" data-id="' + id + '" data-key="c-' + m.id + '-' + p + '-' + id +
+      '" aria-pressed="' + on + '" aria-label="' + esc(ROSTER[id]) + ', period ' + (i + 1) + '"' + (dis ? ' disabled' : '') + '>' +
+      (on ? MIN : '') + '</button></div>';
+  }).join('');
+  return '<div class="row"><div class="pname"><span class="n">' + esc(ROSTER[id]) + '</span>' +
+    (tg ? '<div class="tgs">' + tg + '</div>' : '') + '</div>' + cells +
+    '<div class="m">' + (mm ? mm : '–') + '</div>' +
+    '<div class="d"><b>' + dd + '</b><span class="dl ' + dl.cls + '">' + dl.txt + '</span></div></div>';
+}
+
+function matchHTML(m){
+  const st = stats();
+  const r = rowsFor(m);
+  const shown = new Set(r.base.concat(r.extra, r.others));
+  const cand = ALL.filter(id => m.pool.includes(id) && !shown.has(id) && !lockedBy(m, id));
+
+  const head = '<div class="ghead"><div class="hl">Player</div>' +
+    PERIODS.map((p, i) => {
+      const n = state[m.id][p].length;
+      return '<div class="pc"><b>P' + (i + 1) + '</b><span class="cnt' + (n === SLOTS ? ' ok' : n > 0 ? ' part' : '') +
+        '" data-cnt="' + m.id + '-' + p + '">' + n + '/' + SLOTS + '</span></div>';
+    }).join('') + '<div class="hl">Match</div><div class="hl">Day</div></div>';
+
+  const rows = r.base.map(id => rowHTML(m, id, 'base', st))
+    .concat(r.extra.map(id => rowHTML(m, id, 'extra', st)), r.others.map(id => rowHTML(m, id, 'other', st))).join('');
+
+  const key = 'clear-' + m.id, isArmed = armed === key;
+  const chips = cand.length
+    ? '<div class="lbl">Add from the other team</div><div class="chips">' + cand.map(id =>
+        '<button type="button" class="chip" data-act="add" data-m="' + m.id + '" data-id="' + id + '" data-key="a-' + m.id + '-' + id + '"' +
+        (editable() ? '' : ' disabled') + '>+ ' + esc(ROSTER[id]) + '</button>').join('') + '</div>'
+    : '';
+  const foot = '<div class="foot">' + chips +
+    '<button type="button" class="ghost' + (isArmed ? ' danger' : '') + '" data-act="clear" data-m="' + m.id + '" data-key="' + key + '"' +
+    (editable() ? '' : ' disabled') + '>' + (isArmed ? 'Tap again to clear' : 'Clear this match') + '</button></div>';
+
+  let notes = '';
+  if (m.clash) notes += '<p class="note">Same time as <b>' + esc(MBY[m.clash].tab) + '</b>. A girl can only be in one of the two.</p>';
+  if (m.nearNote) notes += '<p class="note">' + esc(m.nearNote) + '</p>';
+  if (!ready) notes += '<p class="note">Loading saved lineups…</p>';
+
+  return '<div class="mh"><h2>' + esc(m.tab) + '</h2><span class="age">' + esc(m.age) + '</span></div>' +
+    '<p class="meta">' + esc(m.court) + ' · vs ' + esc(m.opp) + '</p>' +
+    '<p class="strip"><b>Day so far:</b> avg ' + Math.round(st.avg) + ' min · lowest ' + st.min + ' (' + esc(st.lowN) + ') · highest ' + st.max + ' (' + esc(st.highN) + ')</p>' +
+    notes +
+    '<div class="card">' + head + rows + foot + '</div>' +
+    '<p class="legend">Tap a square to put a player on court for that 5-minute period. <b>Day</b> adds up every match. The small number is how far above or below the average that player is.</p>';
+}
+
+function totalsHTML(){
+  const st = stats();
+  const scale = Math.max(60, st.max);
+  const lab = m => (m.team === 'Bagarmossen' ? 'F16' : m.team === 'Svart' ? 'Sva' : 'Vit') + '<br>' + m.time;
+  const head = '<div class="thead"><div class="hl">Player</div>' +
+    MATCHES.map((m, i) => '<div class="hl' + (i === 4 ? ' sep' : '') + '">' + lab(m) + '</div>').join('') + '<div class="hl">Day</div></div>';
+  const rows = ALL.map(id => {
+    const dd = dayOf(id), dl = deltaInfo(dd, st.avg);
+    const cells = MATCHES.map((m, i) => {
+      const v = minsIn(m.id, id);
+      return '<div class="tm' + (v ? '' : ' z') + (i === 4 ? ' sep' : '') + '">' + (v || '–') + '</div>';
+    }).join('');
+    return '<div class="trow"><div class="pname"><span class="n">' + esc(ROSTER[id]) + '</span></div>' + cells +
+      '<div class="dd"><div class="t"><b>' + dd + '</b><span class="dl ' + dl.cls + '">' + dl.txt + '</span></div>' +
+      '<span class="bar' + (dl.cls === 'down' ? ' down' : '') + '"><span style="width:' + Math.min(100, dd / scale * 100).toFixed(1) + '%"></span></span></div></div>';
+  }).join('');
+  const isArmed = armed === 'clearall';
+  return '<div class="mh"><h2>Totals</h2><span class="age">Minutes</span></div>' +
+    '<p class="meta">Minutes per match and for the whole day.</p>' +
+    '<p class="strip"><b>Average:</b> ' + Math.round(st.avg) + ' min · lowest ' + st.min + ' (' + esc(st.lowN) + ') · highest ' + st.max + ' (' + esc(st.highN) + ')</p>' +
+    '<div class="card">' + head + rows +
+    '<div class="foot"><button type="button" class="ghost' + (isArmed ? ' danger' : '') + '" data-act="clearall" data-key="clearall"' +
+    (editable() ? '' : ' disabled') + '>' + (isArmed ? 'Tap again to clear everything' : 'Clear all lineups') + '</button></div></div>' +
+    '<p class="legend">Amber bars are more than half a period below the average. Lydia (Svart matches only) and KlaraP (F2016 only) will naturally sit lower.</p>';
+}
+
+function renderTabs(){
+  const el = $('tabs');
+  el.innerHTML = MATCHES.map(m =>
+    '<button type="button" class="tab" role="tab" data-act="tab" data-tab="' + m.id + '" aria-selected="' + (tab === m.id) + '">' +
+    '<span class="dot ' + m.dot + '" aria-hidden="true"></span>' + esc(m.tab) + '</button>').join('') +
+    '<button type="button" class="tab" role="tab" data-act="tab" data-tab="totals" aria-selected="' + (tab === 'totals') + '">Totals</button>';
+  const sel = el.querySelector('[aria-selected="true"]');
+  if (sel) el.scrollLeft = sel.offsetLeft - (el.clientWidth - sel.offsetWidth) / 2;
+}
+function renderPanel(){
+  const el = $('panel');
+  const a = document.activeElement;
+  const key = a && a.dataset ? a.dataset.key : null;
+  el.innerHTML = tab === 'totals' ? totalsHTML() : matchHTML(MBY[tab]);
+  if (key) {
+    const n = el.querySelector('[data-key="' + key + '"]');
+    if (n && !n.disabled) n.focus({ preventScroll:true });
+  }
+}
+
+/* ---------- events ---------- */
+$('tabs').addEventListener('click', e => {
+  const b = e.target.closest('[data-tab]');
+  if (!b) return;
+  tab = b.dataset.tab;
+  armed = null;
+  try { localStorage.setItem('bagis-tab', tab); } catch (err) {}
+  renderTabs(); renderPanel();
+  window.scrollTo(0, 0);
+});
+$('panel').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]');
+  if (!b || b.disabled) return;
+  const act = b.dataset.act, mid = b.dataset.m, id = b.dataset.id;
+  if (act === 'cell') toggle(mid, b.dataset.p, id);
+  else if (act === 'add') { (added[mid] || (added[mid] = new Set())).add(id); renderPanel(); }
+  else if (act === 'rm') { if (added[mid]) added[mid].delete(id); renderPanel(); }
+  else if (act === 'clear' || act === 'clearall') {
+    clearTimeout(armT);
+    if (armed === b.dataset.key) { armed = null; clearAct(act, mid); }
+    else { armed = b.dataset.key; armT = setTimeout(() => { armed = null; renderPanel(); }, 4000); }
+    renderPanel();
+  }
+});
+
+/* ---------- start ---------- */
+load();
+renderTabs();
+renderPanel();
+})();
+</script>
+</body>
+</html>
