@@ -247,6 +247,9 @@ function normalize(doc){
   return s;
 }
 
+/* Starting lineups, used until this browser has its own saved copy. */
+const SEED = {"f16a":{"p1":["daniyah","iris","cleo","klarap"],"p2":["inez","isabelle","bibi","cora"],"p3":["amani","celine","cora","judit"],"p4":["celine","daniyah","inez","klarap"]},"f16b":{"p1":["bibi","cleo","judit","inez"],"p2":["isabelle","daniyah","celine","klarap"],"p3":["inez","iris","amani","cora"],"p4":["daniyah","cleo","klarap","bibi"]},"svart1":{"p1":["bibi","celine","cleo","isabelle"],"p2":["cora","cleo","bibi","lydia"],"p3":["celine","cora","isabelle","lydia"],"p4":["bibi","cleo","isabelle","cora"]},"svart2":{"p1":["celine","cleo","cora","amani"],"p2":["bibi","isabelle","iris","lydia"],"p3":["cleo","cora","celine","amani"],"p4":["bibi","iris","lydia","isabelle"]},"vit1":{"p1":["inez","klaras","daniyah","judit"],"p2":["iris","daniyah","klaras","amani"],"p3":["inez","judit","klaras","amani"],"p4":["daniyah","inez","iris","judit"]},"vit2":{"p1":["klaras","judit","inez","daniyah"],"p2":["amani","iris","daniyah","isabelle"],"p3":["inez","klaras","celine","judit"],"p4":["amani","iris","klaras","judit"]}};
+
 let state = emptyState();
 let added = {};                 // extra rows opened from "other team", per match
 let tab = 'svart1';
@@ -302,9 +305,9 @@ function persist(){
 function load(){
   try {
     const raw = localStorage.getItem(KEY);
-    if (raw) state = normalize(JSON.parse(raw));
+    state = raw ? normalize(JSON.parse(raw)) : normalize({ lineups:SEED });
     setStatus('saved');
-  } catch (e) { setStatus('local'); }
+  } catch (e) { state = normalize({ lineups:SEED }); setStatus('local'); }
 }
 
 /* ---------- editing ---------- */
