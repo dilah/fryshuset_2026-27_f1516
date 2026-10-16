@@ -37,6 +37,7 @@
 }
 
 :root{color-scheme:light}
+[hidden]{display:none!important}
 html{padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box}
 body{
@@ -164,6 +165,18 @@ button.tg.rm{cursor:pointer;text-decoration:underline;background:transparent}
 .bar span{display:block;height:100%;background:var(--accent)}
 .bar.down span{background:var(--warn)}
 
+.top .side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.sharebtn{height:36px;padding:0 14px;border-radius:18px;border:1.5px solid var(--accent);background:var(--accent);color:var(--on-accent);font:600 14px/1 var(--body);cursor:pointer}
+.smsg{min-height:14px;font:600 12px/1.1 var(--body);color:var(--good)}
+.stat[data-s="shared"]{color:var(--accent);background:var(--accent-soft);border-color:transparent}
+.stat[data-s="shared"]::before{background:var(--accent)}
+.note.shared{display:flex;flex-direction:column;gap:10px;margin:0 0 10px}
+.note.shared p{margin:0}
+.note.shared .acts{display:flex;flex-wrap:wrap;gap:8px}
+.note.shared button{height:38px;padding:0 14px;border-radius:10px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font:600 14px/1 var(--body);cursor:pointer}
+.note.shared button.go{background:var(--accent);color:var(--on-accent)}
+.fallback{display:flex;flex-direction:column;gap:6px;margin:0 0 10px;font:600 13px/1.2 var(--body);color:var(--muted)}
+.fallback input{width:100%;min-width:0;height:40px;padding:0 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:500 13px/1 var(--body)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion: reduce){.cell{transition:none}.cell:active:not(:disabled){transform:none}}
 </style>
@@ -175,8 +188,14 @@ button.tg.rm{cursor:pointer;text-decoration:underline;background:transparent}
       <h1>Bagis Lineup Planner</h1>
       <p class="sub">F2015 and F2016 · 4 on court · 4 periods of 5 min</p>
     </div>
-    <span class="stat" id="stat" data-s="loading" role="status">Loading…</span>
+    <div class="side">
+      <span class="stat" id="stat" data-s="loading" role="status">Loading…</span>
+      <button type="button" class="sharebtn" id="share">Share link</button>
+      <span class="smsg" id="smsg" role="status"></span>
+    </div>
   </header>
+  <div class="note shared" id="banner" hidden></div>
+  <div class="fallback" id="fallback" hidden><label for="shareUrl">Copy this link</label><input id="shareUrl" type="text" readonly></div>
   <nav class="tabs" id="tabs" role="tablist" aria-label="Matches"></nav>
   <main class="panel" id="panel" role="tabpanel"></main>
   <div class="sr" id="live" aria-live="polite"></div>
@@ -287,16 +306,18 @@ function deltaInfo(d, avg){
 
 /* ---------- saving (this device only, no account) ---------- */
 const KEY = 'bagis-lineup-v1';
-const LABEL = { saved:'Saved on this device', local:'Not saved' };
+const LABEL = { saved:'Saved on this device', local:'Not saved', shared:'Shared lineup' };
 const TITLE = {
   saved:'Lineups are kept in this browser. Other phones do not see them.',
-  local:'This browser blocks saving. Lineups last only while the page is open.'
+  local:'This browser blocks saving. Lineups last only while the page is open.',
+  shared:'Opened from a link. Not saved on this device yet.'
 };
 function setStatus(s){
   const el = $('stat');
   el.dataset.s = s; el.textContent = LABEL[s]; el.title = TITLE[s] || '';
 }
 function persist(){
+  if (preview) { preview = null; clearHash(); renderBanner(); }
   try {
     localStorage.setItem(KEY, JSON.stringify({ v:1, lineups:state }));
     setStatus('saved');
@@ -308,7 +329,83 @@ function load(){
     state = raw ? normalize(JSON.parse(raw)) : normalize({ lineups:SEED });
     setStatus('saved');
   } catch (e) { state = normalize({ lineups:SEED }); setStatus('local'); }
+  const shared = decode(location.hash);
+  if (shared) {
+    if (JSON.stringify(shared) === JSON.stringify(state)) clearHash();
+    else { preview = { mine:state }; state = shared; setStatus('shared'); }
+  }
 }
+
+/* ---------- sharing a lineup by link (no server) ---------- */
+let preview = null;
+const CHR = {};
+Object.keys(ROSTER).forEach((id, i) => { CHR[id] = String.fromCharCode(97 + i); });
+const IDOF = {};
+Object.keys(CHR).forEach(id => { IDOF[CHR[id]] = id; });
+
+function encode(st){
+  return MATCHES.map(m => PERIODS.map(p => st[m.id][p].map(id => CHR[id]).join('')).join('-')).join('~');
+}
+function decode(hash){
+  const mt = /^#l=([a-z~-]*)$/.exec(hash || '');
+  if (!mt) return null;
+  const parts = mt[1].split('~');
+  if (parts.length !== MATCHES.length) return null;
+  const lineups = {};
+  for (let i = 0; i < MATCHES.length; i++) {
+    const per = parts[i].split('-');
+    if (per.length !== PERIODS.length) return null;
+    lineups[MATCHES[i].id] = {};
+    for (let j = 0; j < PERIODS.length; j++) {
+      const ids = [];
+      for (const ch of per[j]) { if (!IDOF[ch]) return null; ids.push(IDOF[ch]); }
+      lineups[MATCHES[i].id][PERIODS[j]] = ids;
+    }
+  }
+  return normalize({ lineups });
+}
+function clearHash(){
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+}
+function shareUrl(){ return location.origin + location.pathname + '#l=' + encode(state); }
+
+function renderBanner(){
+  const el = $('banner');
+  if (!preview) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  el.innerHTML = '<p><b>This is a shared lineup.</b> Your own saved lineup is untouched until you save this one. Changing anything here also saves it.</p>' +
+    '<div class="acts"><button type="button" class="go" data-b="save">Save on this device</button>' +
+    '<button type="button" data-b="back">Back to my lineup</button></div>';
+}
+$('banner').addEventListener('click', e => {
+  const b = e.target.closest('[data-b]');
+  if (!b || !preview) return;
+  if (b.dataset.b === 'save') { persist(); }
+  else { state = preview.mine; preview = null; clearHash(); setStatus('saved'); renderBanner(); }
+  renderPanel();
+});
+
+let smsgT = null;
+function say(t){
+  $('smsg').textContent = t;
+  clearTimeout(smsgT);
+  smsgT = setTimeout(() => { $('smsg').textContent = ''; }, 3500);
+}
+function showFallback(url){
+  const box = $('fallback'), inp = $('shareUrl');
+  box.hidden = false; inp.value = url;
+  inp.focus(); inp.select();
+  say('Copy the link below');
+}
+$('share').addEventListener('click', async () => {
+  const url = shareUrl();
+  if (navigator.share) {
+    try { await navigator.share({ title:'Bagis lineup', url }); return; }
+    catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  try { await navigator.clipboard.writeText(url); $('fallback').hidden = true; say('Link copied'); }
+  catch (e) { showFallback(url); }
+});
 
 /* ---------- editing ---------- */
 const editable = () => ready && mode !== 'readonly';
@@ -484,6 +581,7 @@ $('panel').addEventListener('click', e => {
 
 /* ---------- start ---------- */
 load();
+renderBanner();
 renderTabs();
 renderPanel();
 })();
